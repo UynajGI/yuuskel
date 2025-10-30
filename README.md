@@ -2,7 +2,7 @@
 
 ✨ **Your Universal Skeleton** — 一键生成结构清晰、环境就绪的通用项目骨架。
 
-> `yuu` = Yuunagi 的个人前缀（也谐音 "you" → **为你而生**）
+> `UynajGI` = Yuunagi 的个人前缀（也谐音 "you" → **为你而生**）
 >
 > `skel` = skeleton（项目骨架，源自 Unix `/etc/skel`）
 
@@ -57,10 +57,10 @@
 
 ### 1. 下载可执行文件
 
-前往 [Releases 页面](https://github.com/yuu/yuuskel/releases) 下载对应系统的文件：
+前往 [Releases 页面](https://github.com/UynajGI/yuuskel/releases) 下载对应系统的文件：
 
-- **Linux / macOS**: [`yuuskel`](https://github.com/yuu/yuuskel/releases/latest/download/yuuskel)
-- **Windows**: [`yuuskel.exe`](https://github.com/yuu/yuuskel/releases/latest/download/yuuskel.exe)
+- **Linux / macOS**: [`yuuskel`](https://github.com/UynajGI/yuuskel/releases/latest/download/yuuskel)
+- **Windows**: [`yuuskel.exe`](https://github.com/UynajGI/yuuskel/releases/latest/download/yuuskel.exe)
 
 > 💡 提示：右键链接 → “链接另存为” 即可下载
 
@@ -91,7 +91,7 @@ yuuskel
 ### 🔧 备选：从源码安装（需要 Rust）
 
 ```bash
-git clone https://github.com/yuu/yuuskel.git
+git clone https://github.com/UynajGI/yuuskel.git
 cd yuuskel
 cargo install --path .
 ```
