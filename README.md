@@ -55,15 +55,48 @@
 
 ## 📦 安装
 
-### 从源码安装（推荐）
+### 1. 下载可执行文件
+
+前往 [Releases 页面](https://github.com/yuu/yuuskel/releases) 下载对应系统的文件：
+
+- **Linux / macOS**: [`yuuskel`](https://github.com/yuu/yuuskel/releases/latest/download/yuuskel)
+- **Windows**: [`yuuskel.exe`](https://github.com/yuu/yuuskel/releases/latest/download/yuuskel.exe)
+
+> 💡 提示：右键链接 → “链接另存为” 即可下载
+
+### 2. 赋予执行权限（仅 Linux/macOS）
 
 ```bash
-git clone https://github.com/your-username/yuuskel.git
+chmod +x yuuskel
+```
+
+### 3. 移动到系统 PATH（可选但推荐）
+
+```bash
+# Linux/macOS
+sudo mv yuuskel /usr/local/bin/
+
+# Windows
+# 将 yuuskel.exe 复制到 C:\Windows 或任意 PATH 目录
+```
+
+现在你就可以在终端直接运行：
+
+```bash
+yuuskel
+```
+
+> 需要 [Rust 工具链](https://rustup.rs/)（运行 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` 安装）
+
+### 🔧 备选：从源码安装（需要 Rust）
+
+```bash
+git clone https://github.com/yuu/yuuskel.git
 cd yuuskel
 cargo install --path .
 ```
 
-> 需要 [Rust 工具链](https://rustup.rs/)（`cargo`）
+> 需要 [Rust 工具链](https://rustup.rs/)（运行 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` 安装）
 
 ---
 
