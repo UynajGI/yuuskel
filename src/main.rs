@@ -31,6 +31,21 @@ fn main() {
     #[cfg(windows)]
     colored::control::set_virtual_terminal(true).ok();
 
+    let args: Vec<String> = std::env::args().collect();
+    if args.len() == 2 {
+        match args[1].as_str() {
+            "--version" => {
+                println!("yuuskel {}", env!("CARGO_PKG_VERSION"));
+                return;
+            }
+            "--help" => {
+                println!("yuuskel — 初始化通用项目结构\n\n用法: yuuskel");
+                return;
+            }
+            _ => {}
+        }
+    }
+
     if let Err(e) = run() {
         eprintln!("❌ 初始化失败: {}", e.to_string().red());
         process::exit(1);
@@ -58,7 +73,7 @@ fn run() -> std::io::Result<()> {
             .default(default_name.to_string())
             .validate_with(|input: &String| {
                 if input.len() > 100 {
-                    Err("项目名称过长")
+                    Err("项目名称过长（最大支持100个字符）")
                 } else if validate_project_name(input) {
                     Ok(())
                 } else {
@@ -101,6 +116,8 @@ fn run() -> std::io::Result<()> {
             fs::create_dir_all(&path)?;
             if is_existing {
                 println!("➕ 补充目录: {}", d.yellow());
+            } else {
+                println!("➕ 创建目录: {}", d.green()); // 新增：新建项目时提示
             }
         }
     }
@@ -149,9 +166,9 @@ fn run() -> std::io::Result<()> {
         ("NOTEBOOKS_DIR", "notebooks"),
     ];
 
-    let mut env_content = format!("PROJECT_ROOT={}\n", abs_str);
+    let mut env_content = format!("PROJECT_ROOT=\"{}\"\n", abs_str);
     for (var_name, dir_path) in &env_vars {
-        env_content.push_str(&format!("{}{}={}/{}\n", prefix, var_name, abs_str, dir_path));
+        env_content.push_str(&format!("{}{}=\"{}/{}\"\n", prefix, var_name, abs_str, dir_path));
     }
 
     fs::write(target_dir.join(".env"), env_content)?;
@@ -160,9 +177,12 @@ fn run() -> std::io::Result<()> {
     }
 
     // 覆盖写入 USAGE.md
-    fs::write(target_dir.join("USAGE.md"), USAGE_MD)?;
-    if is_existing {
-        println!("🔄 更新: {}", "USAGE.md".blue());
+    let usage_path = target_dir.join("USAGE.md");
+    if !usage_path.exists() {
+        fs::write(usage_path, USAGE_MD)?;
+        println!("➕ 创建: {}", "USAGE.md".green());
+    } else if is_existing {
+        println!("ℹ️  {} 已存在，跳过更新", "USAGE.md".blue());
     }
 
     // === 动态生成 README.md（仅当不存在时）===
@@ -229,37 +249,66 @@ dist/
             }
         }
     }
-    if git_success {
-        let add_commit = Confirm::new()
-            .with_prompt("💾 是否创建初始提交？")
-            .default(true)
-            .interact()?;
-        if add_commit {
-            // git add .
-            // git commit -m "chore: initialize project with yuuskel"
-            if
-                let Ok(output) = std::process::Command
-                    ::new("git")
-                    .arg("add")
-                    .arg(".")
-                    .current_dir(&target_dir)
-                    .output()
-            {
-                if !output.status.success() {
-                    eprintln!("⚠️  Git 添加失败: {}", String::from_utf8_lossy(&output.stderr));
+
+    // 检查 git config
+    let has_user = std::process::Command
+        ::new("git")
+        .args(["config", "user.name"])
+        .current_dir(&target_dir)
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false);
+
+    let has_email = std::process::Command
+        ::new("git")
+        .args(["config", "user.email"])
+        .current_dir(&target_dir)
+        .output()
+        .map(|o| o.status.success())
+        .unwrap_or(false);
+
+    if !has_user || !has_email {
+        eprintln!(
+            "⚠️  Git 用户信息未配置，跳过初始提交\n💡 运行以下命令设置：\n  git config --global user.name \"Your Name\"\n  git config --global user.email \"you@example.com\""
+        );
+    } else {
+        if git_success {
+            let add_commit = Confirm::new()
+                .with_prompt("💾 是否创建初始提交？")
+                .default(true)
+                .interact()?;
+            if add_commit {
+                // git add .
+                // git commit -m "chore: initialize project with yuuskel"
+                if
+                    let Ok(output) = std::process::Command
+                        ::new("git")
+                        .arg("add")
+                        .arg(".")
+                        .current_dir(&target_dir)
+                        .output()
+                {
+                    if !output.status.success() {
+                        eprintln!(
+                            "⚠️  Git 添加失败: {}\n💡 建议检查：1. 工作区文件权限 2. Git 配置（user.name/user.email）",
+                            String::from_utf8_lossy(&output.stderr)
+                        );
+                    }
                 }
-            }
-            if
-                let Ok(output) = std::process::Command
-                    ::new("git")
-                    .arg("commit")
-                    .arg("-m")
-                    .arg("chore: initialize project with yuuskel")
-                    .current_dir(&target_dir)
-                    .output()
-            {
-                if !output.status.success() {
-                    eprintln!("⚠️  Git 提交失败: {}", String::from_utf8_lossy(&output.stderr));
+                if
+                    let Ok(output) = std::process::Command
+                        ::new("git")
+                        .arg("commit")
+                        .arg("-m")
+                        .arg("chore: initialize project with yuuskel")
+                        .current_dir(&target_dir)
+                        .output()
+                {
+                    if output.status.success() {
+                        println!("💾 初始提交创建成功"); // 新增：成功提示
+                    } else {
+                        eprintln!("⚠️  Git 提交失败: {}", String::from_utf8_lossy(&output.stderr));
+                    }
                 }
             }
         }
