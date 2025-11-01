@@ -55,38 +55,69 @@
 
 ## 📦 安装
 
-### 1. 下载可执行文件
+`yuuskel` 提供多种安装方式：
 
-前往 [Releases 页面](https://github.com/UynajGI/yuuskel/releases) 下载对应系统的文件：
+---
+
+### ✅ 推荐方式：通过 `cargo` 一键安装（需 Rust）
+
+`yuuskel` 已发布到 [crates.io](https://crates.io/crates/yuuskel)，只需一行命令即可安装：
+
+```bash
+cargo install yuuskel
+```
+
+> 💡 **前提**：你需要安装 [Rust 工具链](https://rustup.rs/)。
+> 若尚未安装，请运行以下命令（适用于 Linux、macOS、WSL）：
+>
+> ```bash
+> curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+> ```
+>
+> Windows 用户请下载并运行 [rustup-init.exe](https://win.rustup.rs/)，然后按提示操作。
+
+安装完成后，`yuuskel` 命令将自动加入你的 `PATH`，可直接在终端使用：
+
+```bash
+yuuskel
+```
+
+---
+
+### 📥 方式二：下载预编译二进制文件
+
+前往 [Releases 页面](https://github.com/UynajGI/yuuskel/releases) 下载对应系统的可执行文件：
 
 - **Linux / macOS**: [`yuuskel`](https://github.com/UynajGI/yuuskel/releases/latest/download/yuuskel)
 - **Windows**: [`yuuskel.exe`](https://github.com/UynajGI/yuuskel/releases/latest/download/yuuskel.exe)
 
 > 💡 提示：右键链接 → “链接另存为” 即可下载
 
-### 2. 赋予执行权限（仅 Linux/macOS）
+#### 赋予执行权限（仅 Linux / macOS）
 
 ```bash
 chmod +x yuuskel
 ```
 
-### 3. 移动到系统 PATH（可选但推荐）
+#### 添加到系统 PATH
 
-```bash
-# Linux/macOS
-sudo mv yuuskel /usr/local/bin/
+- **Linux / macOS**：
+  ```bash
+  sudo mv yuuskel /usr/local/bin/
+  ```
 
-# Windows
-# 将 yuuskel.exe 复制到 C:\Windows 或任意 PATH 目录
-```
+- **Windows**：
+  将 `yuuskel.exe` 复制到 `C:\Windows` 或任意已加入 `PATH` 的目录（如 `C:\Users\<你的用户名>\.cargo\bin`）。
 
-现在你就可以在终端直接运行：
+之后即可在任意目录运行：
 
 ```bash
 yuuskel
 ```
 
-### 🔧 备选：从源码安装（需要 Rust）
+---
+
+### 🔧 方式三：从源码安装
 
 ```bash
 git clone https://github.com/UynajGI/yuuskel.git
@@ -94,38 +125,41 @@ cd yuuskel
 cargo install --path .
 ```
 
-> 需要 [Rust 工具链](https://rustup.rs/)（运行 `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh` 安装）
+> 同样需要先安装 [Rust 工具链](https://rustup.rs/)（见上文）。
 
 ---
 
-## 🖼️ 使用示例
+无论你选择哪种方式，安装完成后都可以通过以下命令验证：
 
 ```bash
-$ yuuskel
+yuuskel --help
+```
 
-                        _        _
-  _   _ _   _ _   _ ___| | _____| |
- | | | | | | | | | / __| |/ / _ \ |
- | |_| | |_| | |_| \__ \   <  __/ |
-  \__, |\__,_|\__,_|___/_|\_\___|_|
-  |___/
+或直接运行：
 
-🛠️  yuuskel — 初始化通用项目结构
+```bash
+yuuskel
+```
 
-❓ 初始化方式
-❯ 新建项目文件夹
-  在当前目录初始化
+---
 
-📁 项目文件夹名称 [my_project]: my_analysis
-✅ 目标目录: /home/user/my_analysis
-🔤 是否为环境变量添加项目前缀？（避免多项目冲突）
-❯ 否（使用通用名称，如 OUTPUT_DIR）
-  是（如 MYPROJ_OUTPUT_DIR）
+## 🔧 贡献代码
 
-...
+欢迎任何形式的贡献，包括但不限于：
 
-✅ 通用项目初始化完成！
-📄 查看使用指南: /home/user/my_analysis/USAGE.md
-📄 项目入口: /home/user/my_analysis/README.md
-⚙️  环境变量路径: /home/user/my_analysis/.env
-💡 提示：在脚本中通过 dotenv
+- 提交 Bug 报告和功能请求
+- 提交代码修复（通过 Pull Request）
+- 完善文档（如添加使用示例、更新说明）
+- 翻译项目到其他语言
+- 提交新的项目模板（如 Rust 项目模板）
+
+贡献代码时请遵守 [Rust 社区行为准则](https://www.rust-lang.org/policies/code-of-conduct)。
+
+## 📝 许可协议
+
+`yuuskel` 使用 [MIT 许可协议](https://github.com/UynajGI/yuuskel/main/License) 开源。
+
+## 🤝 联系作者
+
+- 邮箱：[yuunagi@outlook.com](mailto:yuunagi@outlook.com)
+- GitHub：[UynajGI](https://github.com/UynajGI)
