@@ -2,7 +2,7 @@
 
 ✨ **Your Universal Skeleton** — 一键生成结构清晰、环境就绪的通用项目骨架。
 
-> `UynajGI` = Yuunagi 的个人前缀（也谐音 "you" → **为你而生**）
+> `yuu` = Yuunagi 的个人前缀（也谐音 "you" → **为你而生**）
 >
 > `skel` = skeleton（项目骨架，源自 Unix `/etc/skel`）
 
@@ -102,6 +102,7 @@ chmod +x yuuskel
 #### 添加到系统 PATH
 
 - **Linux / macOS**：
+
   ```bash
   sudo mv yuuskel /usr/local/bin/
   ```
