@@ -17,12 +17,52 @@ const LOGO: &str =
 "##;
 
 fn validate_project_name(name: &str) -> bool {
-    !name.is_empty() &&
-        !name.contains(std::path::MAIN_SEPARATOR) &&
-        !name.contains('/') &&
-        !name.contains('\\') &&
-        name != "." &&
-        name != ".."
+    if name.is_empty() || name.len() > 100 {
+        return false;
+    }
+    if name == "." || name == ".." {
+        return false;
+    }
+    // 禁止路径分隔符（跨平台）
+    if name.contains(std::path::MAIN_SEPARATOR) || name.contains('/') || name.contains('\\') {
+        return false;
+    }
+    // 禁止 Windows 保留名（大小写不敏感）
+    let reserved = [
+        "CON",
+        "PRN",
+        "AUX",
+        "NUL",
+        "COM1",
+        "COM2",
+        "COM3",
+        "COM4",
+        "COM5",
+        "COM6",
+        "COM7",
+        "COM8",
+        "COM9",
+        "LPT1",
+        "LPT2",
+        "LPT3",
+        "LPT4",
+        "LPT5",
+        "LPT6",
+        "LPT7",
+        "LPT8",
+        "LPT9",
+    ];
+    if reserved.contains(&name.to_uppercase().as_str()) {
+        return false;
+    }
+    // 可选：禁止首尾空格或点（避免隐藏目录）
+    if
+        name.starts_with(|c: char| (c.is_whitespace() || c == '.')) ||
+        name.ends_with(|c: char| c.is_whitespace())
+    {
+        return false;
+    }
+    true
 }
 
 #[derive(Clone, Copy)]
