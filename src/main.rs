@@ -39,7 +39,6 @@ impl Language {
     fn msg(&self, key: MsgKey) -> &'static str {
         match (self, key) {
             // Logo 和固定字符串可复用
-            (_, MsgKey::Logo) => LOGO,
             (_, MsgKey::UsageHelp) =>
                 "yuuskel — Initialize standardized project structure\n\nUsage: yuuskel",
 
@@ -172,7 +171,6 @@ impl Language {
 
 #[derive(Clone, Copy)]
 enum MsgKey {
-    Logo,
     UsageHelp,
     Title,
     InitModePrompt,
@@ -233,6 +231,7 @@ fn main() {
         }
     }
 
+    println!("{}", LOGO.green().bold());
     // 👇 第一步：选择语言
     let lang_options = Language::all();
     let lang_selection = Select::new()
@@ -260,7 +259,6 @@ fn main() {
     }
 }
 fn run(lang: Language) -> std::io::Result<()> {
-    println!("{}", lang.msg(MsgKey::Logo).green().bold());
     println!("{}", lang.msg(MsgKey::Title).cyan().bold());
 
     // 选择模式
