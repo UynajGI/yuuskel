@@ -157,7 +157,7 @@ yuuskel
 
 ## 📝 许可协议
 
-`yuuskel` 使用 [MIT 许可协议](https://github.com/UynajGI/yuuskel/main/License) 开源。
+`yuuskel` 使用 [MIT 许可协议](https://github.com/UynajGI/yuuskel/blob/main/License) 开源。
 
 ## 🤝 联系作者
 
