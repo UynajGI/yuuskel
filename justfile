@@ -4,6 +4,7 @@ alias c := clean
 alias ba := build-all
 alias cb := clean-build
 alias cba := clean-build-all
+alias i := install
 
 default:
   just --list
@@ -30,4 +31,5 @@ clean-build-all:
     cargo build --release
     cargo build --release --target x86_64-pc-windows-gnu
 
-
+install:
+    cargo install --path .
