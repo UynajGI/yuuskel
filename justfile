@@ -33,3 +33,6 @@ clean-build-all:
 
 install:
     cargo install --path .
+
+publish:
+    cargo publish
