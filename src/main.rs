@@ -359,7 +359,8 @@ fn run(lang: Language) -> std::io::Result<()> {
     let abs_path = target_dir.canonicalize().unwrap_or_else(|_| target_dir.clone());
     let abs_str = abs_path.to_string_lossy().replace('\\', "/");
 
-    // 生成带前缀的 .env 内容
+    // === 安全增量更新 .env（保留用户自定义内容）===
+    let env_path = target_dir.join(".env");
     let env_vars = [
         ("INPUT_DIR", "input"),
         ("OUTPUT_DIR", "output"),
@@ -372,14 +373,46 @@ fn run(lang: Language) -> std::io::Result<()> {
         ("NOTEBOOKS_DIR", "notebooks"),
     ];
 
-    let mut env_content = format!("PROJECT_ROOT=\"{}\"\n", abs_str);
+    // 读取现有内容（如果存在）
+    let existing_content = fs::read_to_string(&env_path).unwrap_or_default();
+    let mut lines: Vec<String> = existing_content
+        .lines()
+        .map(|s| s.to_string())
+        .collect();
+
+    // 构建需要更新的键集合（用于识别哪些行要替换）
+    let managed_keys: std::collections::HashSet<String> = std::iter
+        ::once("PROJECT_ROOT".to_string())
+        .chain(env_vars.iter().map(|(k, _)| format!("{}{}", prefix, k)))
+        .collect();
+
+    // 过滤掉已存在的 managed keys（避免重复）
+    lines.retain(|line| {
+        let trimmed = line.trim();
+        if trimmed.is_empty() || trimmed.starts_with('#') {
+            return true; // 保留空行和注释
+        }
+        // 检查是否是 managed key（格式：KEY=...）
+        if let Some(eq_pos) = trimmed.find('=') {
+            let key = &trimmed[..eq_pos];
+            !managed_keys.contains(key)
+        } else {
+            true // 无效行也保留（用户可能有特殊内容）
+        }
+    });
+
+    // 添加新的 managed 变量（PROJECT_ROOT + 所有 _DIR）
+    lines.push(format!("PROJECT_ROOT=\"{}\"", abs_str));
     for (var_name, dir_path) in &env_vars {
-        env_content.push_str(&format!("{}{}=\"{}/{}\"\n", prefix, var_name, abs_str, dir_path));
+        lines.push(format!("{}{}=\"{}/{}\"", prefix, var_name, abs_str, dir_path));
     }
 
-    fs::write(target_dir.join(".env"), env_content)?;
+    // 写回文件
+    fs::write(&env_path, lines.join("\n") + "\n")?;
     if is_existing {
         println!("{}{}", lang.msg(MsgKey::UpdateDotEnv), ".env".blue());
+    } else {
+        println!("➕ {}", ".env".green());
     }
 
     // === 写入 USAGE.md（根据语言）===
