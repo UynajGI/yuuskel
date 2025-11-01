@@ -4,6 +4,8 @@ version = "1.0.0"
 edition = "2024"
 description = "Initialize standardized, reproducible project directories"
 license = "MIT"
+repository = "https://github.com/UynajGI/yuuskel"                         # 可选但推荐
+homepage = "https://github.com/UynajGI/yuuskel"
 
 [dependencies]
 dialoguer = "0.12"
