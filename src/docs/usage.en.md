@@ -12,6 +12,7 @@ This project uses a standardized directory layout to unify the management of **c
 - **scripts/**: Executable scripts (each script performs a single task)
 - **configs/**: Configuration files (YAML, JSON, TOML, etc.)
 - **docs/**: Project documentation, notes, and design materials
+- **logs/**: Log files for tracking script executions, errors, and debug information
 - **notebooks/**: Interactive exploration environments (e.g., Jupyter, Pluto)
 
 ## 🌐 Loading Environment Variables

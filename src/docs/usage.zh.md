@@ -12,6 +12,7 @@
 - **scripts/**：可执行脚本（每个脚本完成单一任务）
 - **configs/**：配置文件（YAML/JSON/TOML 等）
 - **docs/**：项目文档、说明、设计稿
+- **logs/**：脚本执行日志、错误与调试信息
 - **notebooks/**：交互式探索环境（Jupyter/Pluto 等）
 
 ## 🌐 环境变量加载
