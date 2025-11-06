@@ -352,7 +352,17 @@ fn run(lang: Language) -> std::io::Result<()> {
     let is_existing = target_dir.exists();
 
     // 通用项目目录结构
-    let dirs = ["input", "output", "assets/temp", "src", "scripts", "configs", "docs", "notebooks"];
+    let dirs = [
+        "input",
+        "output",
+        "assets/temp",
+        "src",
+        "scripts",
+        "configs",
+        "docs",
+        "notebooks",
+        "logs",
+    ];
 
     // 创建缺失的目录（增量安全）
     for &d in &dirs {
